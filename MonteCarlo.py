@@ -1,4 +1,4 @@
-from random import randint
+import random
 
 # MonteCarlo.py
 # This program uses a Monte Carlo approach to estimate the probability of winning the dice game "Approach" with different
@@ -20,23 +20,44 @@ from random import randint
 # game. If Player 1 wins, increment the appropriate value in the win_table dictionary.
 
 # n is the limit.
+def roll_die():
+    #Simulate rolling a six-sided die.
+    return random.randint(1, 6)
 
-def monte_carlo_approach(n) :
+def monte_carlo_approach(n):
     win_table = {}
-    for i in range(n-5,n+1) :
+    for i in range(n - 5, n + 1):
         win_table[i] = 0
 
-    for hold_val in (n-5,n+1) :
-        for i in range(100000) :
-        ## you do this part. My solution is under 20 lines of code. Yours can be longer, but if it's getting
-        ## really big, take a step back and rethink.
+    for hold_val in range(n - 5, n + 1):
+        for _ in range(100000):
+            player1_score = 0
+            # Player 1 plays
+            while player1_score < hold_val and player1_score <= n:
+                player1_score += roll_die()
+                if player1_score > n:
+                    player1_score = 0  # Player 1 busted
+                    break
 
-        ## player 1 plays
+            # Player 1 done
+            if 0 < player1_score <= n:
+                # If not, player 2 plays
+                player2_score = 0
+                while player2_score <= player1_score:
+                    player2_score += roll_die()
+                    if player2_score > n:
+                        # Player 2 busts, Player 1 wins
+                        win_table[hold_val] += 1
+                        break
+                    elif player2_score > player1_score:
+                        # Player 2 beats Player 1
+                        break
+
+    # Output the win probabilities
+    for item in win_table.keys():
+        print("%d: %f" % (item, win_table[item] / 100000))
 
 
-        ## player 1 done. Did they exceed n?
-        ## if not, player 2 plays
-        ## player 2 > player1?
-
-    for item in win_table.keys() :
-        print("%d: %f" % (item, win_table[item]/1000000))
+# Example input
+target = 10
+monte_carlo_approach(target)
