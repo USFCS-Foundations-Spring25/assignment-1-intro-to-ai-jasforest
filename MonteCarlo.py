@@ -30,7 +30,7 @@ def monte_carlo_approach(n):
         win_table[i] = 0
 
     for hold_val in range(n - 5, n + 1):
-        for _ in range(100000):
+        for _ in range(1000000):
             player1_score = 0
             # Player 1 plays
             while player1_score < hold_val and player1_score <= n:
@@ -55,7 +55,7 @@ def monte_carlo_approach(n):
 
     # Output the win probabilities
     for item in win_table.keys():
-        print("%d: %f" % (item, win_table[item] / 100000))
+        print("%d: %f" % (item, win_table[item] / 1000000))
 
 
 # Example input
